@@ -3,43 +3,53 @@
 #include <cstring>
 #include <fstream>
 #include <windows.h>
+#include <string>
 
 
 class Adress {
 private:
-	std::string city;
-	std::string street;
-	int house;
-	int apartment;
+	std::string city_;
+	std::string street_;
+	int house_=0;
+	int apartment_=0;
+	std::string FullAdress_;
 public:
-	Adress();
 
-	Adress(std::string city, std::string street, int house, int apartment)
+
+Adress(std::string city, std::string street, int house, int apartment)
 	{
-		house = 0;
-		apartment = 0;
-	}
-	void setCity(std::string city) {
-		this->city = city;
-	}
-	void setStreet(std::string street) {
-		this->street = street;
-	}
-	void setHous(int house) {
-		this->house = house;
-	}
-	void setApartment(int apartment) {
-		this->apartment = apartment;
-	}
+         city_ = city;
+		street_ = street;
+		house_ = house;
+		apartment_ = apartment;
 
-	std::string get_output_address() {
 	}
-	std::string getCity() { return city; }
-	std::string getStreet() { return street; }
-	int getHouse() { return house; }
-	int getApartment() { return apartment; }
+	
+std::string Output_address() {
+	FullAdress_ = city_ + ", " + street_ + ", " + std::to_string(house_)
+		+ ", " + std::to_string(apartment_);
+	return FullAdress_;
+}
+	
+	
 };
-void memFree(Adress*&);
+
+
+
+
+std::string* createTextArr(const int size)
+{
+	std::string* TextArr = new std::string[size]{};
+
+	return TextArr;
+}
+
+
+void deleteTextArr(std::string* TextArr, const int size)
+{
+	delete[] TextArr;
+	TextArr = nullptr;
+}
 
 int main()
 {
@@ -57,22 +67,26 @@ int main()
 	int size = 0;//число карточек адресов
 	fin >> size;
 	std::cout << size << std::endl;
-	Adress* adr = nullptr;
-	adr = new Adress[size];
-
+	std::string city;
+	std::string street;
+	int house;
+	int apartment;
+	std::string* adr = createTextArr(size);
+	//Adress *adr = new Adress (city, street, house,  apartment)[size];
 
 
 
 	for (int i = 0; i < size; i++) {
-		std::string city;
+		/*std::string city;
 		std::string street;
 		int house;
-		int apartment;
+		int apartment;*/
 		fin >> city >> street >> house >> apartment;
-		adr[i] = Adress(city, street, house, apartment);
-		//memFree(adr);
+		Adress adress(city, street, house, apartment);
+		adr[i] = adress.Output_address();
 
-		std::cout << city << street << house << apartment << "\n ";
+
+		//std::cout << city << " " << street << " " << house << " " << apartment << "\n ";
 	}
 	std::ofstream fout("OUT.txt");
 	if (fout.is_open())
@@ -82,19 +96,19 @@ int main()
 			fout << size << std::endl;
 			for (int i = size - 1; i >= 0; --i)
 			{
-				fout << adr[i].getCity() << ", "
-					<< adr[i].getStreet() << ", "
-					<< adr[i].getHouse() << ", "
-					<< adr[i].getApartment() << std::endl;
-			}
-			std::cout << "файл записан " << std::endl;
+				//std::cout << adr[i] << std::endl;
 
+				fout << adr[i] << std::endl;
+
+				std::cout << "файл записан " << std::endl;
+
+
+			}
 
 		}
-		
-	}
-	delete[] adr;
+		delete[] adr;
 
+	}
 }
 
 
@@ -109,6 +123,3 @@ int main()
 //   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
 //   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
 
-Adress::Adress()
-{
-}
